@@ -1,0 +1,5 @@
+org/colston/sclib/gui/GuiApp.class
+org/colston/sclib/i18n/Message.class
+org/colston/sclib/gui/Splash.class
+org/colston/sclib/i18n/Messages.class
+org/colston/sclib/gui/StatusPanel.class
