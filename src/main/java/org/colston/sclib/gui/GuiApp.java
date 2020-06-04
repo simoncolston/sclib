@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -48,15 +47,23 @@ public abstract class GuiApp
 
 		//give ourselves minimum time for splash screen
 		long startMillis = System.currentTimeMillis();
-		configure();
-		createUI();
-
+		try
+		{
+			configure();
+			loadApplicationData();
+			createUI();
+		}
+		catch (Throwable e)
+		{
+			splash.disposeSplash();
+			getLogger().log(Level.SEVERE, "Error initialising app", e);
+			System.exit(1);
+		}
+			
 		// show the GUI and get rid of the splash
 		EventQueue.invokeLater(() ->
 		{
 			frame.pack();
-			frame.setLocationRelativeTo(null);
-
 			long timeLeft = 3000 - (System.currentTimeMillis() - startMillis);
 			if (timeLeft > 0)
 			{
@@ -67,21 +74,23 @@ public abstract class GuiApp
 				} catch (InterruptedException e) {}
 			}
 			// end pause
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 			getFocusComponent().requestFocusInWindow();
 			splash.disposeSplash();
 		});
-
 	}
 
-	protected void configure()
+	protected abstract void loadApplicationData();
+
+	protected void configure() throws Exception
 	{
 		configureConfigDir();
 		configureLogging();
 		configureLookAndFeel();
 	}
 
-	protected void configureConfigDir()
+	protected void configureConfigDir() throws IOException
 	{
 		configDir = Path.of(System.getProperty("user.home"), getConfigDirName());
 		try
@@ -90,8 +99,9 @@ public abstract class GuiApp
 		}
 		catch (IOException e)
 		{
+			// no logging available yet so output something
 			e.printStackTrace();
-			System.exit(1);
+			throw e;
 		}
 	}
 
@@ -102,7 +112,7 @@ public abstract class GuiApp
 		return configDir;
 	}
 	
-	protected void configureLogging()
+	protected void configureLogging() throws Exception
 	{
 		try
 		{
@@ -134,35 +144,28 @@ public abstract class GuiApp
 		}
 		catch (SecurityException | IOException e)
 		{
+			// no logging available so print something
 			e.printStackTrace();
+			throw e;
 		}
 	}
 	
-	protected void configureLookAndFeel()
+	protected void configureLookAndFeel() throws Exception
 	{
-		try
+		final String GTK_LAF = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+		String laf = null;
+		for (LookAndFeelInfo l : UIManager.getInstalledLookAndFeels())
 		{
-			final String GTK_LAF = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-			String laf = null;
-			for (LookAndFeelInfo l : UIManager.getInstalledLookAndFeels())
+			if (GTK_LAF.equals(l.getClassName()))
 			{
-				if (GTK_LAF.equals(l.getClassName()))
-				{
-					laf = l.getClassName();
-					break;
-				}
+				laf = l.getClassName();
+				break;
 			}
-			laf = laf != null ? laf : UIManager.getSystemLookAndFeelClassName();
-			getLogger().log(Level.INFO, "Using: {0}", laf);
-			UIManager.setLookAndFeel(laf);
-		} 
-		catch (Exception e)
-		{
-			getLogger().log(Level.SEVERE, "Loading Look and Feel", e);
-			System.exit(1);
 		}
+		laf = laf != null ? laf : UIManager.getSystemLookAndFeelClassName();
+		getLogger().log(Level.INFO, "Using: {0}", laf);
+		UIManager.setLookAndFeel(laf);
 	}
-	
 
 	protected void createUI()
 	{

@@ -15,7 +15,7 @@ public class StatusPanel extends JPanel
 	{
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLoweredBevelBorder(), 
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		add(message);
 	}
