@@ -162,7 +162,7 @@ public abstract class GuiApp
 				break;
 			}
 		}
-		laf = laf != null ? laf : UIManager.getSystemLookAndFeelClassName();
+		laf = laf != null ? laf : UIManager.getCrossPlatformLookAndFeelClassName();
 		getLogger().log(Level.INFO, "Using: {0}", laf);
 		UIManager.setLookAndFeel(laf);
 	}
