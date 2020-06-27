@@ -122,7 +122,7 @@ public abstract class GuiApp
 				Properties ps = new Properties();
 				ps.setProperty("handlers", "java.util.logging.FileHandler, java.util.logging.ConsoleHandler");
 				ps.setProperty(".level", "INFO");
-				ps.setProperty("java.util.logging.ConsoleHandler.level", "INFO");
+				ps.setProperty("java.util.logging.ConsoleHandler.level", "ALL");
 				ps.setProperty("java.util.logging.ConsoleHandler.formatter", "java.util.logging.SimpleFormatter");
 				ps.setProperty("java.util.logging.FileHandler.level", "ALL");
 				ps.setProperty("java.util.logging.FileHandler.formatter", "java.util.logging.SimpleFormatter");
