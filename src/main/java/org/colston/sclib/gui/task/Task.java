@@ -1,5 +1,7 @@
 package org.colston.sclib.gui.task;
 
+import org.colston.sclib.i18n.Message;
+
 import java.awt.Component;
 import java.util.concurrent.ExecutionException;
 
@@ -79,12 +81,17 @@ public abstract class Task<T>
 	}
 
 	/**
-	 * Call to execute the task.
+	 * Execute the task.
 	 */
 	public void execute()
 	{
 		showGlass();
 		worker.execute();
+	}
+
+	public void execute(Message message) {
+		//TODO: Display message
+		execute();
 	}
 
 	/**
@@ -100,7 +107,7 @@ public abstract class Task<T>
 		catch (InterruptedException | ExecutionException ignored)
 		{
 			/*
-			This has probably already been dealt with in choreComplete().
+			This has probably already been dealt with in taskComplete().
 			Returns null anyway.
 			 */
 		}
