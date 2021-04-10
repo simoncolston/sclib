@@ -1,4 +1,4 @@
-package org.colston.sclib.gui.chore;
+package org.colston.sclib.gui.task;
 
 import java.awt.AWTEvent;
 import java.awt.Cursor;
@@ -8,9 +8,13 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.JPanel;
 
-public class ChoreGlassPane extends JPanel
+/**
+ * Glass pane that is put on a {@link javax.swing.RootPaneContainer} while a background chore is executing to stop any
+ * mouse or keyboard input from the user.
+ */
+public class TaskGlassPane extends JPanel
 {
-	public ChoreGlassPane()
+	public TaskGlassPane()
 	{
 		setOpaque(false);
 		

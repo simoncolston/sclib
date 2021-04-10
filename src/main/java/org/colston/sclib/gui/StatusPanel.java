@@ -22,7 +22,7 @@ public class StatusPanel extends JPanel
 
 	/**
 	 * Set the message on the status bar. Does not need to be synchronized because
-	 * this will either be invoked on the event dispath thread or the text will be
+	 * this will either be invoked on the event dispatch thread or the text will be
 	 * set on the event dispatch thread using <code>EventQueue.invokeLater()</code>.
 	 * 
 	 * @param mess the message to display on the status panel
